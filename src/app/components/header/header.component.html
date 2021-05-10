@@ -1,0 +1,42 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light" *ngIf="showHeader()">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="">Stefacoin</a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item" *ngIf="usuario?.tipo === 1">
+          <a
+            class="nav-link active"
+            aria-current="page"
+            routerLink="/area-usuario"
+            >Area do Professor</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="usuario?.tipo === 2">
+          <a class="nav-link" routerLink="/area-usuario">Area do Aluno</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="nav-scroller bg-white box-shadow">
+  <nav class="nav nav-underline">
+    <a class="nav-link active" href="#"></a>
+    <a class="nav-link pointer" (click)="mostrarLista('professores')">
+      Professores
+      <span class="badge badge-pill bg-light align-text-bottom">qtd</span>
+    </a>
+    <a class="nav-link pointer" (click)="mostrarLista('alunos')">
+      Alunos
+      <span class="badge badge-pill bg-light align-text-bottom">qtd</span>
+    </a>
+    <a class="nav-link pointer" routerLink="[/listar/curso]">
+      Cursos
+      <span class="badge badge-pill bg-light align-text-bottom">qtd</span>
+    </a>
+    <a class="nav-link pointer" routerLink="[/listar/aula]">
+      Aulas
+      <span class="badge badge-pill bg-light align-text-bottom">qtd</span>
+    </a>
+  </nav>
+</div>

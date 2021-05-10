@@ -1,0 +1,13 @@
+.box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+@media only screen and (min-width: 400px) {
+  .card-pai {
+    max-width: 450px;
+    min-width: 350px;
+  }
+}

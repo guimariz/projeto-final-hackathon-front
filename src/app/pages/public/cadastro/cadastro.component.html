@@ -1,0 +1,79 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12 text-center my-5">
+      <h1 class="display-4">Cadastro de Usuário</h1>
+    </div>
+  </div>
+  <div class="row justify-content-center mb-5">
+    <div class="col-sm-12 col-md-10 col-lg-8">
+      <form [formGroup]="cadastroForm" (ngSubmit)="cadastrar()">
+        <div class="form-floating">
+          <label for="userEmail">Endereço de email</label>
+          <input
+            type="email"
+            class="form-control"
+            formControlName="email"
+            placeholder="Digite o email para cadastro"
+          />
+        </div>
+        <div class="form-group">
+          <label for="userPassword">Senha</label>
+          <input
+            type="password"
+            class="form-control"
+            formControlName="senha"
+            placeholder="Digite a senha desejada"
+          />
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Nome</label>
+          <input
+            type="text"
+            formControlName="nome"
+            class="form-control"
+            placeholder="Digite seu nome"
+          />
+        </div>
+        <div class="form-group">
+          <label for="tipo-usuario">Tipo de usuário</label>
+          <select
+            class="form-control"
+            formControlName="tipo"
+            (change)="recebeUsuario($event.target.value)"
+          >
+            <option selected>Selecione...</option>
+            <option>Professor</option>
+            <option>Aluno</option>
+          </select>
+        </div>
+
+        <div *ngIf="isAluno">
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Idade</label>
+            <input
+              type="text"
+              formControlName="idade"
+              class="form-control"
+              placeholder="Digite a sua idade"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Formação</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="formacao"
+              placeholder="Digite a sua formação"
+            />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-sm-12">
+            <button type="submit" class="btn btn-primary">Enviar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<main role="main" class="container">
+  <div
+    class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow"
+  >
+    <div class="lh-100">
+      <h6 class="mb-0 text-white lh-100">Hackathon - Stefanini</h6>
+      <small>2021</small>
+    </div>
+  </div>
+  <div class="my-3 p-3 bg-white rounded box-shadow">
+    <h6 class="border-bottom border-gray pb-2 mb-0">Professores</h6>
+    <div class="media text-muted pt-3" *ngFor="let prof of professores">
+      <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+        <strong class="d-block text-gray-dark">@{{ prof.nome }}</strong>
+        <!-- <div *ngFor="let curso of cursos">
+        </div> -->
+      </p>
+    </div>
+
+    <small class="d-block text-right mt-3">
+      <a href="#">Mais Professores</a>
+    </small>
+  </div>
+  <div class="my-3 p-3 bg-white rounded box-shadow">
+    <h6 class="border-bottom border-gray pb-2 mb-0">Usuários</h6>
+    <div class="media text-muted pt-3" *ngFor="let aluno of alunos">
+      <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+        <strong class="d-block text-gray-dark">@{{ aluno.nome }}</strong>
+        <!-- <div *ngFor="let curso of cursos">
+        </div> -->
+      </p>
+    </div>
+
+    <small class="d-block text-right mt-3">
+      <a href="#">Mais Alunos</a>
+    </small>
+  </div>
+  <div class="my-3 p-3 bg-white rounded box-shadow">
+    <h6 class="border-bottom border-gray pb-2 mb-0">Cursos</h6>
+    <div class="media text-muted pt-3">
+      <img
+        data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1"
+        alt=""
+        class="mr-2 rounded"
+      />
+      <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+        <strong class="d-block text-gray-dark">Nome Curso</strong>
+        Avaliação
+      </p>
+    </div>
+
+    <small class="d-block text-right mt-3">
+      <a href="#">Mais Cursos</a>
+    </small>
+  </div>
+</main>
