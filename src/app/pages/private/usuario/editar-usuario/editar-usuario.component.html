@@ -11,21 +11,22 @@
       />
     </div>
     <div class="form-group">
-      <label for="userPassword">Senha</label>
-      <input
-        type="password"
-        class="form-control"
-        formControlName="senha"
-        placeholder="Digite a senha desejada"
-      />
-    </div>
-    <div class="form-group">
       <label for="exampleFormControlInput1">Nome</label>
       <input
         type="text"
         formControlName="nome"
         class="form-control"
         placeholder="Digite seu nome"
+      />
+    </div>
+    <div class="form-group">
+      <label for="userPassword">Senha</label>
+      <input
+        type="password"
+        required
+        class="form-control"
+        formControlName="senha"
+        placeholder="Digite a senha desejada"
       />
     </div>
   </div>
@@ -87,7 +88,7 @@
           <label for="aula">Nome da Aula:</label>
           <input
             type="text"
-            formControlName="aula"
+            formControlName="nome"
             class="form-control"
             placeholder="Digite o nome da aula"
           />
@@ -126,13 +127,7 @@
 
   <div class="form-row">
     <div class="col-sm-12">
-      <button
-        type="submit"
-        class="btn btn-primary btn-block"
-        (click)="cancelarDialog()"
-      >
-        Enviar
-      </button>
+      <button type="submit" class="btn btn-primary btn-block">Enviar</button>
     </div>
   </div>
 </form>

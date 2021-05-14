@@ -37,16 +37,18 @@ export class HomeComponent implements OnInit {
   
   async listarTodos() {
     const lista = []
-    this.professores = await this.hackathonService.listarTodosHome('professor')
+    this.professores = await this.hackathonService.getListaProfessorHome()
     lista.push(this.professores)
     this.listarCursosProf()
-    this.alunos = await this.hackathonService.listarTodosHome('aluno')
+    this.alunos = await this.hackathonService.getListaAlunoHome()
     lista.push(this.alunos);
-    this.cursos = await this.hackathonService.listarTodosHome('curso')
+    this.cursos = await this.hackathonService.getListaCursoHome()
     lista.push(this.cursos)
-    this.aulas = await this.hackathonService.listarTodosHome('aulas')
+    this.aulas = await this.hackathonService.getListaAulaHome()
     lista.push(this.aulas);
     
+    console.log(this.cursos)
+
     return lista
   }
 

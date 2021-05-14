@@ -95,7 +95,7 @@ export class InserirUsuarioComponent implements OnInit {
         this.toastr.success(novoCurso.mensagem)
       }
       this.router.navigateByUrl('/area-usuario');
-      this.refresh(1250);
+      this.dialogRef.close();
     } catch(err) {
       this.toastr.error(err.error.message);
     }
@@ -103,12 +103,6 @@ export class InserirUsuarioComponent implements OnInit {
 
   receberTipo() {
     this.isAula = this.data === 'aula'
-  }
-
-  refresh(tempo): void {
-    setTimeout(() => {
-      window.location.reload();
-    }, tempo);
   }
 
 }

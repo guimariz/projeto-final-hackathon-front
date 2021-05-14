@@ -40,11 +40,11 @@
             <td>
               <button
                 *ngIf="
-                  d.id === aluno.id && profTables[i].nome === 'Professores'
+                  d.id === usuario.id && profTables[i].nome === 'Professores'
                 "
                 type="button"
                 class="btn btn-outline-warning"
-                (click)="editar(d.id, profTables[i].nome)"
+                (click)="editar(d, profTables[i].nome)"
               >
                 Editar
               </button>
@@ -52,7 +52,7 @@
                 *ngIf="profTables[i].nome !== 'Professores'"
                 type="button"
                 class="btn btn-outline-warning"
-                (click)="editar(d.id, profTables[i].nome)"
+                (click)="editar(d, profTables[i].nome)"
               >
                 Editar
               </button>
@@ -90,7 +90,7 @@
               <button
                 type="button"
                 class="btn btn-outline-warning"
-                (click)="editar(d.id, profTables[i].nome)"
+                (click)="editar(d, profTables[i].nome)"
               >
                 Editar
               </button>
@@ -137,7 +137,8 @@
               >
                 <ngb-rating
                   [max]="5"
-                  (rateChange)="getNotaCurso(curso.id, $event)"
+                  [rate]="curso.nota"
+                  (rateChange)="atribuirNotaCurso(curso.id, $event)"
                   [readonly]="false"
                 >
                 </ngb-rating>

@@ -13,7 +13,6 @@ import { HackathonService } from 'src/app/services/hackathon.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  aluno: any;
   usuario: Usuario;
   listaAtual: string;
   data: any = [];
@@ -38,11 +37,6 @@ export class HeaderComponent implements OnInit {
 
   async permissaoUsuario() {
       this.usuario = this.authService.getUsuario();
-      await this.pegarMatriculas();
-  }
-
-  async pegarMatriculas() {
-    this.aluno = await this.hackathonService.obterAluno(this.usuario.nome).toPromise()
   }
 
   showHeader() {
@@ -93,7 +87,7 @@ export class HeaderComponent implements OnInit {
       };
 
       if(x[tipo]){
-        let usuario = await this.hackathonService.obter(this.aluno.id, x[tipo]).toPromise();
+        let usuario = await this.hackathonService.obter(this.usuario.id, x[tipo]).toPromise();
         const dialogRef = this.dialog.open(EditarUsuarioComponent, {
           width: '500px',
           height: '500px',

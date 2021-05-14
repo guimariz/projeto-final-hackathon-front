@@ -46,12 +46,12 @@ export class ListarComponent implements OnInit {
         listaNome: 'Aulas',
         listaCurso: [],
         listaUsuario: this.hackathonService.getListaAula,
-      }        
+      }
     }
 
     this.listaNome = obj[tipo].listaNome
     this.listaCurso = obj[tipo].listaCurso
-    this.listaUsuario = await obj[tipo].listaUsuario()
+    this.listaUsuario = await obj[tipo].listaUsuario(true)
 
     if(tipo !== 'aula') {
       for(let l of this.listaUsuario) {

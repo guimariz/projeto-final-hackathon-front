@@ -15,7 +15,6 @@ import { InserirUsuarioComponent } from '../inserir-usuario/inserir-usuario.comp
 })
 export class AreaUsuarioComponent implements OnInit {
 
-  aluno: any;
   usuario: Usuario;
   data: any = [];
   profTables = [
@@ -35,20 +34,20 @@ export class AreaUsuarioComponent implements OnInit {
   
   ngOnInit(): void {
     this.permissaoUsuario()
-    this.listarTodos()
   }
   
   async permissaoUsuario() {
     this.usuario = this.authService.getUsuario();
-    console.log(this.usuario)
     
-    await this.pegarMatriculas();
     if(this.usuario.tipo === 2) {
       this.listarTablesAluno();
+    }else {
+      this.listarTodos()
     }
   }
 
   async listarTodos() {
+    
     this.professores = await this.hackathonService.getListaProfessor(true)
     this.lista.push(this.professores)
     this.alunos = await this.hackathonService.getListaAluno(true)
@@ -57,7 +56,6 @@ export class AreaUsuarioComponent implements OnInit {
     this.lista.push(this.cursos)
     this.aulas = await this.hackathonService.getListaAula(true)
     this.lista.push(this.aulas);
-    console.log(this.lista)
   }
 
   async listarTablesAluno() {
@@ -65,10 +63,10 @@ export class AreaUsuarioComponent implements OnInit {
 
     this.professores = await this.hackathonService.listarTodos('professor')
     lista.push(this.professores)
-    this.cursos = (await this.hackathonService.listarTodos('curso'))
+    this.cursos = await this.hackathonService.getListaCurso(true)
     lista.push(this.cursos)
 
-    this.alunos = await this.hackathonService.obter(this.aluno.id, 'aluno').toPromise()
+    this.alunos = await this.hackathonService.obter(this.usuario.id, 'aluno').toPromise()
   }
 
 
@@ -83,28 +81,45 @@ export class AreaUsuarioComponent implements OnInit {
     dialogRef.afterClosed().subscribe();
   }
 
-  async editar(id, tipo) {
+  async editar(usuarioEdit, tipo) {
 
-    const x = {
-      'Professores': 'professor',
-      'Alunos': 'aluno',
-      'Cursos': 'curso',
-      'Aulas': 'aula'
+    const tipoEdit = {
+      'Professores': {
+        tipo: 'professor',
+        index: 0,
+        function: this.hackathonService.getListaProfessor
+      },
+      'Alunos': {
+        tipo: 'aluno',
+        index: 1,
+        function: this.hackathonService.getListaAluno
+      },
+      'Cursos': { 
+        tipo: 'curso',
+        index: 2,
+        function: this.hackathonService.getListaCurso
+      }, 
+      'Aulas': {
+        tipo: 'aula',
+        index: 3,
+        function: this.hackathonService.getListaAula
+      }
     };
 
-    if(x[tipo]){
-      let usuario = await this.hackathonService.obter(id, x[tipo]).toPromise();
+    if(tipoEdit[tipo]){
       const dialogRef = this.dialog.open(EditarUsuarioComponent, {
         width: '500px',
         height: '500px',
         data: {
-          usuario,
-          rota: x[tipo],
+          usuario: usuarioEdit,
+          rota: tipoEdit[tipo].tipo,
           permissao: this.usuario
         }
       })
 
-      dialogRef.afterClosed().subscribe
+      dialogRef.afterClosed().subscribe(async (data) => {
+        this.lista[tipoEdit[tipo].index] = await tipoEdit[tipo].function(true);
+      })
     }
   }
 
@@ -134,23 +149,19 @@ export class AreaUsuarioComponent implements OnInit {
     }
   }
 
-  async pegarMatriculas() {
-    this.aluno = await this.hackathonService.obterAluno(this.usuario.nome).toPromise()
-    console.log(this.aluno)
-  }
-
   async matricularAluno(curso) {
     try {
-      let matriculaUsuario: any = await this.hackathonService.matricularAluno(this.aluno.id, curso.id)
+      let matriculaUsuario: any = await this.hackathonService.matricularAluno(curso.id)
       curso.matriculado = matriculaUsuario.data.matriculado
       this.toastr.success(matriculaUsuario.mensagem)
+      
     } catch (error) {
       console.log(error)
     }
   }
 
-  getNotaCurso(cursoId, evento) {
-    this.hackathonService.atribuirNota(cursoId, evento, this.aluno.id, this.usuario.tipo)
+  atribuirNotaCurso(cursoId, evento) {
+    this.hackathonService.atribuirNota(cursoId, evento)
   }
 
 }

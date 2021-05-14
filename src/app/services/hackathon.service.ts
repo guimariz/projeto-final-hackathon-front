@@ -17,8 +17,10 @@ export class HackathonService {
 
   constructor(private httpClient: HttpClient) {}
 
-  listarTodos(rota: string) {
-    return this.httpClient.get(`${URL}/${rota}`).toPromise();
+  listarTodos(rota: string, home = false) {
+    const params = home ? { home: home.toString() } : {}
+
+    return this.httpClient.get(`${URL}/${rota}/`, { params }).toPromise();
   }
 
   listarTodosHome(rota: string) {
@@ -32,27 +34,51 @@ export class HackathonService {
   listarCursosProf(id) {
     return this.httpClient.get(`${URL}/curso/prof/${id}`).toPromise();
   }
+  
+  getCursosMatriculado() {
+    return this.httpClient.get(`${URL}/curso/matriculado/`).toPromise();
+  }
+
+  async getListaProfessorHome(){
+    return await this.listarTodos('professor');
+  }
 
   async getListaProfessor(forceRefresh = false){
-    if(!this.listaProfessor || forceRefresh){
+    if(!this.listaProfessor.length || forceRefresh){
       this.listaProfessor = await this.listarTodos('professor');
     }
     return this.listaProfessor;
   }
+
+  async getListaAlunoHome(){
+    return await this.listarTodos('aluno');
+  }
+
   async getListaAluno(forceRefresh = false){
-    if(!this.listaAluno  || forceRefresh){ 
+    if(!this.listaAluno.length || forceRefresh){ 
       this.listaAluno = await this.listarTodos('aluno');
     }
     return this.listaAluno;
   }
+
+  async getListaCursoHome (){
+    return await this.listarTodos('curso');
+  }
+
   async getListaCurso(forceRefresh = false){
-    if(!this.listaCurso  || forceRefresh){ 
+    if(!this.listaCurso.length || forceRefresh){ 
       this.listaCurso = await this.listarTodos('curso');
+      console.log(this.listaCurso)
     }
     return this.listaCurso;
   }
+
+  async getListaAulaHome(){
+    return await this.listarTodos('aulas');
+  }
+
   async getListaAula(forceRefresh = false){
-    if(!this.listaAula  || forceRefresh){ 
+    if(!this.listaAula.length || forceRefresh){ 
       this.listaAula = await this.listarTodos('aulas');
     }
     return this.listaAula;
@@ -80,36 +106,36 @@ export class HackathonService {
     return this.httpClient.get<Mensagem>(url, header);
   }
 
-  obterAluno(nome: string): Observable<Mensagem>{
+  obterUsuario(email: string, tipo: number): Observable<Mensagem>{
     let header = {
       headers: new HttpHeaders().set('Content-Type', 'application/json')
     }
 
-    let url = `${URL}/aluno/nome/${nome}`;
+    let url;
+    if(tipo === 1) {
+      url = `${URL}/professor/email/${email}`;
+    } else {
+      url = `${URL}/aluno/email/${email}`;
+    }
 
     return this.httpClient.get<Mensagem>(url, header);
   }
 
-  matricularAluno(idAluno: number, idCurso: number){
-    let body = {
-      idCurso: idCurso
-    };
+  matricularAluno(idCurso: number){
 
     let header = {
       headers: new HttpHeaders().set('Content-Type', 'application/json')
     }
 
-    let url = `${URL}/matricular/${idAluno}`;
+    let url = `${URL}/matricular/${idCurso}`;
 
-    return this.httpClient.put<Mensagem>(url, body, header).toPromise();
+    return this.httpClient.put<Mensagem>(url,{}, header).toPromise();
   }
 
-  atribuirNota(idCurso: number, nota: number, idAluno: number, tipo: number){
+  atribuirNota(idCurso: number, nota: number){
     let body = {
       idCurso: idCurso,
-      idAluno: idAluno,
       nota: nota,
-      tipo: tipo
     }
 
     let header = {

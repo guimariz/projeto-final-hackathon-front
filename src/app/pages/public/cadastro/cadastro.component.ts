@@ -37,8 +37,8 @@ export class CadastroComponent implements OnInit {
       senha: [null, Validators.required],
       nome: [null, Validators.required],
       tipo: [null, Validators.required],
-      idade: [null],
-      formacao: [null],
+      idade: [null, Validators.required],
+      formacao: [null, Validators.required],
     });
   }
 

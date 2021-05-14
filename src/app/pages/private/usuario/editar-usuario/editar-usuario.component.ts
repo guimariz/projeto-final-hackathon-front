@@ -1,7 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth.service';
 import { HackathonService } from 'src/app/services/hackathon.service';
 
 @Component({
@@ -18,7 +19,7 @@ export class EditarUsuarioComponent implements OnInit {
   isAula: boolean = false;
   
   
-  constructor(private formBuilder: FormBuilder, public hackathonService : HackathonService, private toastr: ToastrService, public dialogRef: MatDialogRef<EditarUsuarioComponent>, @Inject(MAT_DIALOG_DATA) public data) { 
+  constructor(private authService : AuthService, private formBuilder: FormBuilder, public hackathonService : HackathonService, private toastr: ToastrService, public dialogRef: MatDialogRef<EditarUsuarioComponent>, @Inject(MAT_DIALOG_DATA) public data) { 
     this.receberTipo();
   }
   
@@ -30,12 +31,13 @@ export class EditarUsuarioComponent implements OnInit {
   iniciarForm() {
     const edit = this.data.usuario
 
+    console.log(edit)
 
     this.cadastroForm = this.formBuilder.group({
       id: edit.id,
-      senha: edit.senha,
+      senha: ['', Validators.required],
       email: edit.email,
-      nome: edit.nome,
+      nome: [edit.nome,  Validators.required],
       tipo: edit.tipo,
       idade: edit.idade,
       formacao: edit.formacao,
@@ -43,10 +45,10 @@ export class EditarUsuarioComponent implements OnInit {
       idProfessor: edit.idProfessor,
       aulas: this.formBuilder.array([
         this.formBuilder.group({
-          nome: edit.nome,
-          duracao: edit.duracao,
-          idCurso: edit.idCurso,
-          topicos: edit.topicos
+          nome: edit.aulas[0].nome,
+          duracao: edit.aulas[0].duracao,
+          idCurso: edit.aulas[0].idCurso,
+          topicos: edit.aulas[0].topicos
         })
       ])
     });
@@ -61,11 +63,12 @@ export class EditarUsuarioComponent implements OnInit {
       let editUsuario : any = await this.hackathonService.alterar(usuario.id, usuario, this.data.rota).toPromise();
       this.toastr.success(editUsuario.mensagem)
 
-      this.cancelarDialog()
-  }
-
-  cancelarDialog(): void {
-    this.dialogRef.close();
+      if(this.data.permissao.email === usuario.email) {
+        const { email, tipo, nome, id } = usuario;
+        this.authService.setUsuario({ email, tipo, nome, id})
+      }
+      
+      this.dialogRef.close(usuario);
   }
 
   receberTipo() {
@@ -80,7 +83,6 @@ export class EditarUsuarioComponent implements OnInit {
         break;
       case 'curso':
         this.isCurso = true;
-        this.isAula = true;
         break;
       case 'aula':
         this.isAula = true;
