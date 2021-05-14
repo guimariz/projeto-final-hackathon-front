@@ -1,5 +1,5 @@
 <div class="box">
-  <!-- <form [formGroup]="loginForm" (ngSubmit)="login()">
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
     <div class="mb-3">
       <label for="tx-email" class="form-label">Email</label>
       <input
@@ -7,6 +7,7 @@
         formControlName="email"
         class="form-control"
         id="tx-email"
+        required
       />
     </div>
     <div class="mb-3">
@@ -16,12 +17,13 @@
         formControlName="senha"
         class="form-control"
         id="pwd-senha"
+        required
       />
     </div>
     <button type="submit" class="btn btn-primary mr-5">Login</button>
-    <a href="/nova-conta" class="btn btn-outline-primary">Criar Conta</a>
-  </form> -->
-  <div class="card-pai">
+    <a routerLink="/nova-conta" class="btn btn-outline-primary">Criar Conta</a>
+  </form>
+  <!-- <div class="card-pai">
     <div class="card">
       <article class="card-body">
         <a href="/nova-conta" class="float-right btn btn-outline-primary"
@@ -72,4 +74,5 @@
       </article>
     </div>
   </div>
+</div> -->
 </div>

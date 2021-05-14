@@ -1,53 +1,175 @@
-<div *ngIf="usuario?.tipo === 1">
-  <h1>Área do Professor</h1>
-
-  <div *ngFor="let table of profTables">
-    <h3>Professores</h3>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Nome</th>
-          <th scope="col">Curso</th>
-          <th scope="col">Editar</th>
-          <th scope="col">Excluir</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let prof of professores">
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-      </tbody>
-    </table>
+<div class="container">
+  <div *ngIf="usuario?.tipo === 1">
+    <h3 class="mt-4">Área do Professor</h3>
+    <div class="ml-5" *ngFor="let table of lista; index as i">
+      <div class="row mt-4 d-flex justify-content-between">
+        <h4>{{ profTables[i].nome }}</h4>
+        <button
+          type="button"
+          class="btn btn-outline-primary float-right m-0"
+          *ngIf="profTables[i].nome === 'Cursos'"
+          (click)="inserir('curso')"
+        >
+          Adicionar
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-primary float-right m-0"
+          *ngIf="profTables[i].nome === 'Aulas'"
+          (click)="inserir('aula')"
+        >
+          Adicionar
+        </button>
+      </div>
+      <table
+        *ngIf="profTables[i].nome !== 'Aulas'"
+        class="table table-hover m-1"
+      >
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Editar</th>
+            <th scope="col">Excluir</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of table">
+            <th scope="row">{{ d.id }}</th>
+            <td>{{ d.nome }}</td>
+            <td>
+              <button
+                *ngIf="
+                  d.id === aluno.id && profTables[i].nome === 'Professores'
+                "
+                type="button"
+                class="btn btn-outline-warning"
+                (click)="editar(d.id, profTables[i].nome)"
+              >
+                Editar
+              </button>
+              <button
+                *ngIf="profTables[i].nome !== 'Professores'"
+                type="button"
+                class="btn btn-outline-warning"
+                (click)="editar(d.id, profTables[i].nome)"
+              >
+                Editar
+              </button>
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-outline-danger"
+                (click)="excluir(d.id, profTables[i].nome)"
+              >
+                Excluir
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <hr />
+      <table
+        *ngIf="profTables[i].nome === 'Aulas'"
+        class="table table-hover m-1"
+      >
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Editar</th>
+            <th scope="col">Excluir</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let t of table">
+          <tr *ngFor="let d of t">
+            <th scope="row">{{ d.id }}</th>
+            <td>{{ d.nome }}</td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-outline-warning"
+                (click)="editar(d.id, profTables[i].nome)"
+              >
+                Editar
+              </button>
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-outline-danger"
+                (click)="excluir(d.id, profTables[i].nome, d.idCurso)"
+              >
+                Excluir
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
-
-<div *ngIf="usuario?.tipo === 2">
-  <h1>Área do Aluno</h1>
-
-  <div *ngFor="let table of alunoTables">
-    <h3>Professores</h3>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Nome</th>
-          <th scope="col">Curso</th>
-          <th scope="col">Editar</th>
-          <th scope="col">Excluir</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let prof of professores">
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-      </tbody>
-    </table>
+  <div *ngIf="usuario?.tipo === 2">
+    <h1>Área do Aluno</h1>
+    <div class="ml-5">
+      <div class="row mt-4">
+        <h4>Cursos</h4>
+      </div>
+      <table class="table table-hover m-1">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Professor</th>
+            <th scope="col">Nota</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let curso of cursos; index as j">
+          <tr>
+            <th scope="row">{{ curso.id }}</th>
+            <td>{{ curso.nome }}</td>
+            <td>{{ professores[j].nome }}</td>
+            <td>
+              <div
+                *ngIf="curso.matriculado"
+                style="font-size: x-large; color: orange"
+              >
+                <ngb-rating
+                  [max]="5"
+                  (rateChange)="getNotaCurso(curso.id, $event)"
+                  [readonly]="false"
+                >
+                </ngb-rating>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="!curso.matriculado">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  (click)="matricularAluno(curso)"
+                >
+                  Matricular
+                </button>
+              </div>
+              <div *ngIf="curso.matriculado" class="inline">
+                <h3 class="text-success mr-3">
+                  {{ curso.matriculado ? 'Matriculado' : 'Não Matriculado' }}
+                </h3>
+                <button
+                  (click)="matricularAluno(curso)"
+                  type="button"
+                  class="btn-close btn-danger"
+                  aria-label="Close"
+                >
+                  X
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

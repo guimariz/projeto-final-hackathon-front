@@ -1,10 +1,10 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +18,12 @@ import { PaginaNaoEncontradaComponent } from './pages/public/pagina-nao-encontra
 import { ListarComponent } from './pages/private/usuario/listar/listar.component';
 import { AreaUsuarioComponent } from './pages/private/usuario/area-usuario/area-usuario.component';
 import { RouterModule } from '@angular/router';
+import { InserirUsuarioComponent } from './pages/private/usuario/inserir-usuario/inserir-usuario.component';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatIconModule} from '@angular/material/icon';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { EditarUsuarioComponent } from './pages/private/usuario/editar-usuario/editar-usuario.component';
+
 
 export function tokenGetter() {
   return localStorage.getItem('jwttoken');
@@ -32,7 +38,9 @@ export function tokenGetter() {
     PaginaNaoEncontradaComponent,
     HeaderComponent,
     ListarComponent,
-    AreaUsuarioComponent
+    AreaUsuarioComponent,
+    InserirUsuarioComponent,
+    EditarUsuarioComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +50,11 @@ export function tokenGetter() {
     HttpClientModule,
     ToastrModule.forRoot(),
     NgbModule,
+    NgxSpinnerModule,
+    MatIconModule,
+    MatDialogModule,
     BrowserAnimationsModule,
+    
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -51,6 +63,11 @@ export function tokenGetter() {
   ],
   providers: [
     HttpInterceptorService,
+    MatDialog,
+    {
+      provide: MatDialogRef,
+      useValue: {} 
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorService,
@@ -59,5 +76,6 @@ export function tokenGetter() {
     AuthGuardService,
   ],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {}

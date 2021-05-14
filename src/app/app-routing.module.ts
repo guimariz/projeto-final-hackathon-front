@@ -23,6 +23,10 @@ const routes: Routes = [
     component: AreaUsuarioComponent,
   },
   {
+    path: 'inserir-usuario',
+    component: AreaUsuarioComponent,
+  },
+  {
     path: 'listar/:tipo',
     component: ListarComponent,
   },

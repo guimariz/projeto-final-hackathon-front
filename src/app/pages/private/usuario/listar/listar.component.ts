@@ -9,9 +9,11 @@ import { HackathonService } from 'src/app/services/hackathon.service';
 })
 export class ListarComponent implements OnInit {
 
+  listaNome: string;
   listaUsuario: any = []
   listaCurso: any = []
   tipo: string;
+  isAula: boolean = false;
 
   constructor(private route: ActivatedRoute,private hackathonService: HackathonService) { }
 
@@ -22,27 +24,39 @@ export class ListarComponent implements OnInit {
     });
   }
 
-
   async mostrarLista(tipo) {
-    try {
-        switch(tipo){
-          case 'professores':
-            this.listaUsuario = await this.hackathonService.listarTodosProf();
-            break;
-          case 'alunos':
-            this.listaUsuario = await this.hackathonService.listarTodosAluno();
-            break;
-          case 'cursos':
-            this.listaUsuario = await this.hackathonService.listarTodosCurso();
-            break;
-          case 'aulas':
-            this.listaUsuario = await this.hackathonService.listarTodosAula();
-            break;
-          default:
-            console.log('deu ruim');
-        }
-    } catch (error) {
-      console.log
+    
+    const obj = {
+      'professores' : {
+        listaNome: 'Professores',
+        listaCurso: [],
+        listaUsuario: this.hackathonService.getListaProfessor,
+      },
+      'alunos' : {
+        listaNome: 'Alunos',
+        listaCurso: [],
+        listaUsuario: this.hackathonService.getListaAluno,
+      },
+      'cursos' : {
+        listaNome: 'Cursos',
+        listaCurso: [],
+        listaUsuario: this.hackathonService.getListaCurso,
+      },
+      'aula' : {
+        listaNome: 'Aulas',
+        listaCurso: [],
+        listaUsuario: this.hackathonService.getListaAula,
+      }        
+    }
+
+    this.listaNome = obj[tipo].listaNome
+    this.listaCurso = obj[tipo].listaCurso
+    this.listaUsuario = await obj[tipo].listaUsuario()
+
+    if(tipo !== 'aula') {
+      for(let l of this.listaUsuario) {
+        this.listaCurso.push(await this.hackathonService.listarCursosProf(l.id))
+      }
     }
   }
 

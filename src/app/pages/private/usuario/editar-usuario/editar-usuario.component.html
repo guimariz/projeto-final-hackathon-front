@@ -1,0 +1,138 @@
+<form [formGroup]="cadastroForm" (ngSubmit)="editar()">
+  <div *ngIf="isProfessor">
+    <div class="form-floating">
+      <label for="userEmail">Endereço de email</label>
+      <input
+        type="email"
+        readonly
+        class="form-control"
+        formControlName="email"
+        placeholder="Digite o email para cadastro"
+      />
+    </div>
+    <div class="form-group">
+      <label for="userPassword">Senha</label>
+      <input
+        type="password"
+        class="form-control"
+        formControlName="senha"
+        placeholder="Digite a senha desejada"
+      />
+    </div>
+    <div class="form-group">
+      <label for="exampleFormControlInput1">Nome</label>
+      <input
+        type="text"
+        formControlName="nome"
+        class="form-control"
+        placeholder="Digite seu nome"
+      />
+    </div>
+  </div>
+
+  <div *ngIf="isAluno">
+    <div class="form-group">
+      <label for="exampleFormControlInput1">Idade</label>
+      <input
+        type="text"
+        formControlName="idade"
+        class="form-control"
+        placeholder="Digite a sua idade"
+      />
+    </div>
+    <div class="form-group">
+      <label for="exampleFormControlInput1">Formação</label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="formacao"
+        placeholder="Digite a sua formação"
+      />
+    </div>
+  </div>
+  <div *ngIf="isCurso">
+    <div class="form-group">
+      <label for="nome">Nome do Curso:</label>
+      <input
+        type="text"
+        formControlName="nome"
+        class="form-control"
+        placeholder="Digite o nome do curso"
+      />
+    </div>
+    <div class="form-group">
+      <label for="descricao">Descricao:</label>
+      <input
+        type="text"
+        formControlName="descricao"
+        class="form-control"
+        placeholder="Digite a descrição do curso"
+      />
+    </div>
+    <div class="form-floating">
+      <label for="idProfessor">Id do Professor:</label>
+      <input
+        type="number"
+        class="form-control"
+        formControlName="idProfessor"
+        placeholder="Digite o id do professor"
+      />
+    </div>
+  </div>
+
+  <div div *ngIf="isAula">
+    <div formArrayName="aulas">
+      <div formGroupName="0">
+        <div class="form-group">
+          <label for="aula">Nome da Aula:</label>
+          <input
+            type="text"
+            formControlName="aula"
+            class="form-control"
+            placeholder="Digite o nome da aula"
+          />
+        </div>
+        <div class="form-group">
+          <label for="duracao">Duração:</label>
+          <input
+            type="number"
+            formControlName="duracao"
+            class="form-control"
+            placeholder="Digite a duração da aula"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="idCurso">Id do Curso:</label>
+          <input
+            type="number"
+            class="form-control"
+            formControlName="idCurso"
+            placeholder="Digite o id do curso"
+          />
+        </div>
+        <div class="form-group">
+          <label for="topicos">Tópicos:</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="topicos"
+            placeholder="Digite os tópicos da aula"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="col-sm-12">
+      <button
+        type="submit"
+        class="btn btn-primary btn-block"
+        (click)="cancelarDialog()"
+      >
+        Enviar
+      </button>
+    </div>
+  </div>
+</form>
