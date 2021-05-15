@@ -25,7 +25,6 @@ export class InserirUsuarioComponent implements OnInit {
     this.receberTipo();
     this.iniciarForm();
     this.listarTodos()
-    // this.listaProfessores = this.hackathonService.listaProfessores;
   }
 
   cancelarDialog(): void {
@@ -95,7 +94,7 @@ export class InserirUsuarioComponent implements OnInit {
         this.toastr.success(novoCurso.mensagem)
       }
       this.router.navigateByUrl('/area-usuario');
-      this.dialogRef.close();
+      this.dialogRef.close(true);
     } catch(err) {
       this.toastr.error(err.error.message);
     }

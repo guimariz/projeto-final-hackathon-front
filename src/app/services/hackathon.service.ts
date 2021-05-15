@@ -10,12 +10,13 @@ const URL = 'http://localhost:3000/stefanini';
   providedIn: 'root',
 })
 export class HackathonService {
+
   listaProfessor : any = [];
   listaAluno : any = [];
   listaCurso : any = [];
   listaAula : any = [];
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {  }
 
   listarTodos(rota: string, home = false) {
     const params = home ? { home: home.toString() } : {}
@@ -40,18 +41,19 @@ export class HackathonService {
   }
 
   async getListaProfessorHome(){
-    return await this.listarTodos('professor');
+    return await this.listarTodos('professor', true);
   }
 
   async getListaProfessor(forceRefresh = false){
+    this.listaProfessor = this.listaProfessor || [];
     if(!this.listaProfessor.length || forceRefresh){
       this.listaProfessor = await this.listarTodos('professor');
     }
     return this.listaProfessor;
   }
 
-  async getListaAlunoHome(){
-    return await this.listarTodos('aluno');
+  async getListaAlunoHome(){  
+    return await this.listarTodos('aluno', true);
   }
 
   async getListaAluno(forceRefresh = false){
@@ -62,19 +64,18 @@ export class HackathonService {
   }
 
   async getListaCursoHome (){
-    return await this.listarTodos('curso');
+    return await this.listarTodos('curso', true);
   }
 
   async getListaCurso(forceRefresh = false){
     if(!this.listaCurso.length || forceRefresh){ 
       this.listaCurso = await this.listarTodos('curso');
-      console.log(this.listaCurso)
     }
     return this.listaCurso;
   }
 
   async getListaAulaHome(){
-    return await this.listarTodos('aulas');
+    return await this.listarTodos('aulas', true);
   }
 
   async getListaAula(forceRefresh = false){

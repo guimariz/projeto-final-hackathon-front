@@ -61,7 +61,7 @@
           Cursos:
           <span
             class="badge badge-info mr-1 font-size-12"
-            *ngFor="let c of cursosProf[j]"
+            *ngFor="let c of t.cursos"
           >
             {{ c.nome }}
           </span>
@@ -81,7 +81,17 @@
       <div class="media text-muted pt-3" *ngFor="let t of table; index as j">
         <p class="media-body pb-3 mb-0 border-bottom border-gray">
           <strong class="d-block text-gray-dark">@{{ t.nome }} - </strong>
-          <span class="badge badge-light mr-1 font-size-12"> *** </span>
+          <span class="badge badge-light mr-1 font-size-12">
+            <div *ngIf="t.mediaNotas" style="font-size: x-large; color: orange">
+              <ngb-rating
+                [max]="5"
+                [rate]="t.mediaNotas"
+                (rateChange)="atribuirNotaCurso(curso.id, $event)"
+                [readonly]="true"
+              >
+              </ngb-rating>
+            </div>
+          </span>
         </p>
       </div>
 
@@ -95,8 +105,11 @@
       <h6 class="border-bottom border-gray pb-2 mb-0 font-size-12">
         {{ tableName[i].nome }}
       </h6>
-      <div class="media text-muted pt-3" *ngFor="let t of table; index as j">
-        <p class="media-body pb-3 mb-0 border-bottom border-gray">
+      <div class="media text-muted pt-3" *ngFor="let t of table">
+        <p
+          class="media-body pb-3 mb-0 border-bottom border-gray"
+          *ngIf="t.length"
+        >
           <strong class="d-block text-gray-dark">@{{ t[0].nome }} - </strong>
         </p>
       </div>

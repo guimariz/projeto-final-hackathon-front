@@ -17,6 +17,10 @@ export class EditarUsuarioComponent implements OnInit {
   isAluno: boolean = false;
   isCurso: boolean = false;
   isAula: boolean = false;
+  idProfessor: number;
+  idCurso: number;
+  listaProfessores: any = [];
+  listaCursos : any = [];
   
   
   constructor(private authService : AuthService, private formBuilder: FormBuilder, public hackathonService : HackathonService, private toastr: ToastrService, public dialogRef: MatDialogRef<EditarUsuarioComponent>, @Inject(MAT_DIALOG_DATA) public data) { 
@@ -25,13 +29,19 @@ export class EditarUsuarioComponent implements OnInit {
   
   ngOnInit(): void {
     this.iniciarForm() 
+    this.listaTodos();
     
+  }
+
+  async listaTodos() {
+    this.listaProfessores = await this.hackathonService.getListaProfessor()
+    this.listaCursos = await this.hackathonService.getListaCurso()
   }
   
   iniciarForm() {
     const edit = this.data.usuario
 
-    console.log(edit)
+    edit.aulas = edit.aulas || [{nome: '', duracao: '', idCurso: '', topicos: ''}]
 
     this.cadastroForm = this.formBuilder.group({
       id: edit.id,
@@ -43,14 +53,16 @@ export class EditarUsuarioComponent implements OnInit {
       formacao: edit.formacao,
       descricao: edit.descricao,
       idProfessor: edit.idProfessor,
-      aulas: this.formBuilder.array([
-        this.formBuilder.group({
-          nome: edit.aulas[0].nome,
-          duracao: edit.aulas[0].duracao,
-          idCurso: edit.aulas[0].idCurso,
-          topicos: edit.aulas[0].topicos
+      aulas: this.formBuilder.array( edit.aulas.map(i => {
+        return this.formBuilder.group({
+          id: i.id,
+          nome: i.nome,
+          duracao: i.duracao,
+          idCurso: i.idCurso,
+          topicos: i.topicos
         })
-      ])
+      })
+      )
     });
   }
 
@@ -58,8 +70,18 @@ export class EditarUsuarioComponent implements OnInit {
     let usuario = this.cadastroForm.value;
       if(this.data.rota === 'professor' && this.data.permissao.email !== usuario.email) {
         this.toastr.error('Você não tem permissão para essa operação.')
-        return  
+        return 
       }
+      
+      let idCursoNovo;
+
+      if(this.isAula) {
+        usuario = usuario.aulas[0]
+        
+      }
+
+      
+
       let editUsuario : any = await this.hackathonService.alterar(usuario.id, usuario, this.data.rota).toPromise();
       this.toastr.success(editUsuario.mensagem)
 
@@ -69,6 +91,18 @@ export class EditarUsuarioComponent implements OnInit {
       }
       
       this.dialogRef.close(usuario);
+  }
+
+  recebeId(event, tipo) {
+
+    event = event.split(' ');
+    const id = event[0]
+
+    if(tipo === 'prof') {
+      this.idProfessor = Number(id);
+    } else {
+      this.idCurso = Number(id)
+    }
   }
 
   receberTipo() {

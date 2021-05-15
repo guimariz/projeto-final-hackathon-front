@@ -47,7 +47,6 @@ export class HomeComponent implements OnInit {
     this.aulas = await this.hackathonService.getListaAulaHome()
     lista.push(this.aulas);
     
-    console.log(this.cursos)
 
     return lista
   }

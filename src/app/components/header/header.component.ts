@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { Usuario } from 'src/app/models/usuario';
+import { filter } from 'rxjs/operators';
 import { EditarUsuarioComponent } from 'src/app/pages/private/usuario/editar-usuario/editar-usuario.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { HackathonService } from 'src/app/services/hackathon.service';
@@ -16,27 +17,26 @@ export class HeaderComponent implements OnInit {
   usuario: Usuario;
   listaAtual: string;
   data: any = [];
-  qtd: any = [];
   professores: any;
   alunos: any;
   cursos: any;
   aulas: any;
   listaTodos: any = [];
-  qtdProfs: number;
-  qtdAlunos: number;
-  qtdCursos: number;
-  qtdAulas: number;
 
   constructor(public dialog: MatDialog, private authService: AuthService, private router: Router, private hackathonService : HackathonService) {
   }
   
   ngOnInit(): void {
-    this.listarTodos()
     this.permissaoUsuario() 
   }
-
+  
   async permissaoUsuario() {
+    this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(() => {
       this.usuario = this.authService.getUsuario();
+    });
+
+    if(this.usuario)
+      this.listarTodos()
   }
 
   showHeader() {
@@ -56,21 +56,6 @@ export class HeaderComponent implements OnInit {
     this.listaTodos.push(this.cursos)
     this.aulas = await this.hackathonService.getListaAula()
     this.listaTodos.push(this.aulas);
-    this.pegarQtd();
-  }
-  
-  pegarQtd() {
-    if(this.professores)
-      this.qtdProfs = this.professores.length
-
-    if(this.alunos)
-      this.qtdAlunos = this.alunos.length
-    
-    if(this.cursos)
-      this.qtdCursos = this.cursos.length
-    
-    if(this.aulas)
-      this.qtdAulas = this.aulas.length
   }
 
   mostrarLista(tipo) {

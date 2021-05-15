@@ -30,34 +30,41 @@ export class ListarComponent implements OnInit {
       'professores' : {
         listaNome: 'Professores',
         listaCurso: [],
-        listaUsuario: this.hackathonService.getListaProfessor,
       },
       'alunos' : {
         listaNome: 'Alunos',
         listaCurso: [],
-        listaUsuario: this.hackathonService.getListaAluno,
       },
       'cursos' : {
         listaNome: 'Cursos',
         listaCurso: [],
-        listaUsuario: this.hackathonService.getListaCurso,
       },
-      'aula' : {
+      'aulas' : {
         listaNome: 'Aulas',
         listaCurso: [],
-        listaUsuario: this.hackathonService.getListaAula,
       }
     }
 
     this.listaNome = obj[tipo].listaNome
     this.listaCurso = obj[tipo].listaCurso
-    this.listaUsuario = await obj[tipo].listaUsuario(true)
 
+    if(tipo == 'professores') {
+      this.listaUsuario = await this.hackathonService.getListaProfessor()
+    } else if(tipo == 'cursos') {
+      this.listaUsuario = await this.hackathonService.getListaCurso()
+    } else if(tipo == 'alunos') {
+      this.listaUsuario = await this.hackathonService.getListaAluno()
+    } else {
+      this.listaUsuario = await this.hackathonService.getListaAula()
+    }
+    
+    
     if(tipo !== 'aula') {
       for(let l of this.listaUsuario) {
         this.listaCurso.push(await this.hackathonService.listarCursosProf(l.id))
       }
     }
+
   }
 
 }

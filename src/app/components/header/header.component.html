@@ -20,7 +20,9 @@
         </ul>
       </div>
       <div class="d-flex justify-content-center align-items-center">
-        <p class="m-1">E isso é só o começo, {{ usuario.nome }}...</p>
+        <p *ngIf="usuario" class="m-1">
+          E isso é só o começo, {{ usuario.nome }}...
+        </p>
 
         <a
           class="pointer"

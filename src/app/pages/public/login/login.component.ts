@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
       senha: this.loginForm.get('senha')?.value,
     };
     this.authService.auth(credencial.email, credencial.senha).subscribe(
+      
       (login) => {
         this.authService.setToken(login.token);
         this.authService.setUsuario(login.usuario);

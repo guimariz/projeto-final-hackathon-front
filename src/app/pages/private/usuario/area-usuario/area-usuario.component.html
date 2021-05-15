@@ -8,7 +8,7 @@
           type="button"
           class="btn btn-outline-primary float-right m-0"
           *ngIf="profTables[i].nome === 'Cursos'"
-          (click)="inserir('curso')"
+          (click)="inserir('Cursos')"
         >
           Adicionar
         </button>
@@ -16,7 +16,7 @@
           type="button"
           class="btn btn-outline-primary float-right m-0"
           *ngIf="profTables[i].nome === 'Aulas'"
-          (click)="inserir('aula')"
+          (click)="inserir('Aulas')"
         >
           Adicionar
         </button>
@@ -129,7 +129,7 @@
           <tr>
             <th scope="row">{{ curso.id }}</th>
             <td>{{ curso.nome }}</td>
-            <td>{{ professores[j].nome }}</td>
+            <td>{{ curso.professor.nome }}</td>
             <td>
               <div
                 *ngIf="curso.matriculado"

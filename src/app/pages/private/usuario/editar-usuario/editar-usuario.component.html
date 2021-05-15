@@ -72,12 +72,18 @@
     </div>
     <div class="form-floating">
       <label for="idProfessor">Id do Professor:</label>
-      <input
+      <select
         type="number"
         class="form-control"
         formControlName="idProfessor"
         placeholder="Digite o id do professor"
-      />
+        (change)="recebeId($event.target.value, 'prof')"
+      >
+        <option selected>Selecione...</option>
+        <option *ngFor="let p of listaProfessores">
+          {{ p.id }} - {{ p.nome }}
+        </option>
+      </select>
     </div>
   </div>
 
@@ -105,13 +111,20 @@
 
         <div class="form-group">
           <label for="idCurso">Id do Curso:</label>
-          <input
+          <select
             type="number"
             class="form-control"
             formControlName="idCurso"
-            placeholder="Digite o id do curso"
-          />
+            placeholder="Informe o id do Curso"
+            (change)="recebeId($event.target.value, 'curso')"
+          >
+            <option selected>Selecione...</option>
+            <option *ngFor="let c of listaCursos" [value]="c.id">
+              {{ c.id }} - {{ c.nome }}
+            </option>
+          </select>
         </div>
+
         <div class="form-group">
           <label for="topicos">Tópicos:</label>
           <input
